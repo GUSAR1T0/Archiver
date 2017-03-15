@@ -1,0 +1,4 @@
+### Gradle and IntelliJ IDEA files
+.gradle/
+build/
+.idea/
