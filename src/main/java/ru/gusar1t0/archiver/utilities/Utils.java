@@ -1,10 +1,12 @@
 package ru.gusar1t0.archiver.utilities;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import ru.gusar1t0.archiver.models.Data;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -17,22 +19,23 @@ public final class Utils {
     public static final int HEIGHT = 500;
 
     public static ArrayList<Data> prepareDataForTable(String text) {
-        Pair<Set<Character>, ArrayList<Integer>> pairs = new Pair<>(new TreeSet<>(), new ArrayList<>());
+        TreeSet<Character> values = new TreeSet<>();
+        ArrayList<Integer> counts = new ArrayList<>();
         ArrayList<String> codes = new ArrayList<>();
 
         for (char c : text.toCharArray()) {
-            if (pairs.getElement().add(c)) {
-                for (int i = 0; i < pairs.getElement().size(); i++) {
-                    if ((char) (pairs.getElement().toArray()[i]) == c) {
-                        pairs.getValue().add(i, 1);
+            if (values.add(c)) {
+                for (int i = 0; i < values.size(); i++) {
+                    if ((char) (values.toArray()[i]) == c) {
+                        counts.add(i, 1);
                         codes.add("");
                         break;
                     }
                 }
             } else {
-                for (int i = 0; i < pairs.getElement().size(); i++) {
-                    if ((char) (pairs.getElement().toArray()[i]) == c) {
-                        pairs.getValue().set(i, pairs.getValue().get(i) + 1);
+                for (int i = 0; i < values.size(); i++) {
+                    if ((char) (values.toArray()[i]) == c) {
+                        counts.set(i, counts.get(i) + 1);
                         break;
                     }
                 }
@@ -40,10 +43,10 @@ public final class Utils {
         }
 
         ArrayList<Data> data = new ArrayList<>();
-        for (int i = 0; i < pairs.getElement().size(); i++) {
-            data.add(new Data("\'" + pairs.getElement().toArray()[i] + "\'",
-                    pairs.getValue().get(i),
-                    (float) pairs.getValue().get(i) / text.length(),
+        for (int i = 0; i < values.size(); i++) {
+            data.add(new Data("\'" + values.toArray()[i] + "\'",
+                    counts.get(i),
+                    (float) counts.get(i) / text.length(),
                     codes.get(i)));
         }
         data.sort(Comparator.comparingDouble(Data::getProbability).reversed());
@@ -64,10 +67,16 @@ public final class Utils {
             n += data.get(i - 1).getProbability();
         }
 
-        for (int i = 0; i < pairs.getElement().size(); i++) {
+        for (int i = 0; i < values.size(); i++) {
             data.get(i).setCode(codes.get(i));
         }
 
         return data;
+    }
+
+    public static StringProperty getStyle() {
+        StringProperty style = new SimpleStringProperty();
+        style.bind(Bindings.createStringBinding(() -> "-fx-font-size:16px;\n"));
+        return style;
     }
 }

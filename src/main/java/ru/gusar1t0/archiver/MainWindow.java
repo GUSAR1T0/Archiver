@@ -7,11 +7,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import ru.gusar1t0.archiver.models.Table;
+import ru.gusar1t0.archiver.models.Data;
+import ru.gusar1t0.archiver.models.CodeTable;
+import ru.gusar1t0.archiver.models.InfoTable;
+
+import java.util.ArrayList;
 
 import static ru.gusar1t0.archiver.utilities.Utils.WIDTH;
 import static ru.gusar1t0.archiver.utilities.Utils.prepareDataForTable;
@@ -28,17 +33,29 @@ final class MainWindow {
         Button start = new Button("Start");
         VBox view1 = getStartView(area, start);
 
-        Table table = new Table();
+        InfoTable infoTable = new InfoTable();
+        CodeTable codeTable = new CodeTable();
         Button back = new Button("Back");
-        VBox view2 = getFinalView(table, back);
+        Button another = new Button("Another table");
+        VBox view2 = getFinalView(infoTable, back, another);
 
         StackPane root = new StackPane(view1);
 
         start.setOnAction(event -> {
             if (!text.equals(area.getText())) {
-                table.getList().clear();
-                table.getList().addAll(prepareDataForTable(area.getText()));
-                table.refresh();
+                infoTable.getList().clear();
+
+                ArrayList<Data> data = prepareDataForTable(area.getText());
+                infoTable.getList().addAll(data);
+                if (view2.getChildren().contains(codeTable.getTable())) {
+                    view2.getChildren().remove(codeTable.getTable());
+                    codeTable.create(data);
+                    view2.getChildren().add(0, codeTable.getTable());
+                } else {
+                    codeTable.create(data);
+                }
+
+                infoTable.refresh();
                 text = area.getText();
             }
 
@@ -69,6 +86,16 @@ final class MainWindow {
             slide.play();
         });
 
+        another.setOnAction(event -> {
+            if (view2.getChildren().contains(infoTable)) {
+                view2.getChildren().remove(infoTable);
+                view2.getChildren().add(0, codeTable.getTable());
+            } else {
+                view2.getChildren().remove(codeTable.getTable());
+                view2.getChildren().add(0, infoTable);
+            }
+        });
+
         return root;
     }
 
@@ -91,16 +118,22 @@ final class MainWindow {
         return view;
     }
 
-    private VBox getFinalView(Table table, Button button) {
-        table.setMinHeight(400);
+    private VBox getFinalView(InfoTable infoTable, Button... buttons) {
+        infoTable.setMinHeight(400);
 
-        button.setMinWidth(WIDTH - 30);
-        button.setMinHeight(50);
-        button.setFont(Font.font(20));
+        for (Button button : buttons) {
+            button.setMinWidth(WIDTH / 2f - 20);
+            button.setMinHeight(50);
+            button.setFont(Font.font(20));
+        }
+
+        HBox box = new HBox(buttons);
+        box.setAlignment(Pos.CENTER);
+        box.setSpacing(20);
 
         VBox view = new VBox();
-        view.getChildren().add(table);
-        view.getChildren().add(button);
+        view.getChildren().add(infoTable);
+        view.getChildren().addAll(box);
         view.setPadding(new Insets(20));
         view.setAlignment(Pos.CENTER);
         view.setSpacing(20);

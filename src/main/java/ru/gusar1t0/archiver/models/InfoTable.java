@@ -1,23 +1,21 @@
 package ru.gusar1t0.archiver.models;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import ru.gusar1t0.archiver.utilities.Utils;
 
 /**
  * @author Roman Mashenkin
  * @since 16.03.2017
  */
-public final class Table extends TableView<Data> {
+public final class InfoTable extends TableView<Data> {
     private ObservableList<Data> list = FXCollections.observableArrayList();
 
     @SuppressWarnings("unchecked")
-    public Table() {
+    public InfoTable() {
         double d = 4;   //Number of dividing of columns
 
         TableColumn<Data, String> values = new TableColumn<>("Xᵢ");
@@ -38,10 +36,7 @@ public final class Table extends TableView<Data> {
 
         this.setItems(list);
         this.getColumns().setAll(values, counts, probabilities, codes);
-
-        StringProperty style = new SimpleStringProperty();
-        style.bind(Bindings.createStringBinding(() -> "-fx-font-size:16px;\n"));
-        this.styleProperty().bind(style);
+        this.styleProperty().bind(Utils.getStyle());
     }
 
     public ObservableList<Data> getList() {
