@@ -16,22 +16,16 @@ public final class InfoTable extends TableView<Data> {
 
     @SuppressWarnings("unchecked")
     public InfoTable() {
-        double d = 4;   //Number of dividing of columns
-
         TableColumn<Data, String> values = new TableColumn<>("Xᵢ");
-        values.prefWidthProperty().bind(this.widthProperty().divide(d));
         values.setCellValueFactory(new PropertyValueFactory<>("value"));
 
         TableColumn<Data, Integer> counts = new TableColumn<>("Nᵢ");
-        counts.prefWidthProperty().bind(this.widthProperty().divide(d));
         counts.setCellValueFactory(new PropertyValueFactory<>("count"));
 
         TableColumn<Data, Float> probabilities = new TableColumn<>("Pᵢ");
-        probabilities.prefWidthProperty().bind(this.widthProperty().divide(d));
         probabilities.setCellValueFactory(new PropertyValueFactory<>("probability"));
 
         TableColumn<Data, String> codes = new TableColumn<>("Codes");
-        codes.prefWidthProperty().bind(this.widthProperty().divide(d));
         codes.setCellValueFactory(new PropertyValueFactory<>("code"));
 
         this.setItems(list);

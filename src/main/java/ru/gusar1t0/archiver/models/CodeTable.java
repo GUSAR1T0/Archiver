@@ -19,13 +19,10 @@ public class CodeTable {
     public void create(ArrayList<Data> data) {
         table = new TableView<>();
 
-        double d = data.size() - 1;   //Number of dividing of columns
-
         for (int i = 0; i < data.size() - 1; i++) {
             final int finalI = i;
             TableColumn<ObservableList<Character>, Character> column = new TableColumn<>(i + "");
             column.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().get(finalI)));
-            column.prefWidthProperty().bind(table.widthProperty().divide(d));
             table.getColumns().add(column);
         }
         table.styleProperty().bind(Utils.getStyle());
