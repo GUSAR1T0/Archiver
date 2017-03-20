@@ -9,28 +9,28 @@ import javafx.beans.property.SimpleStringProperty;
  * @since 16.03.2017
  */
 public final class Data {
-    private SimpleStringProperty value;
+    private SimpleStringProperty symbol;
     private SimpleIntegerProperty count;
     private SimpleFloatProperty probability;
     private SimpleStringProperty code;
 
-    public Data(String value, int count, float probability, String code) {
-        this.value = new SimpleStringProperty(value);
+    public Data(String symbol, int count, float probability, String code) {
+        this.symbol = new SimpleStringProperty(symbol);
         this.count = new SimpleIntegerProperty(count);
         this.probability = new SimpleFloatProperty(probability);
         this.code = new SimpleStringProperty(code);
     }
 
-    public String getValue() {
-        return value.get();
+    public String getSymbol() {
+        return symbol.get();
     }
 
-    public SimpleStringProperty valueProperty() {
-        return value;
+    public SimpleStringProperty symbolProperty() {
+        return symbol;
     }
 
-    public void setValue(String value) {
-        this.value.set(value);
+    public void setSymbol(String symbol) {
+        this.symbol.set(symbol);
     }
 
     public int getCount() {

@@ -1,23 +1,24 @@
-package ru.gusar1t0.archiver.models;
+package ru.gusar1t0.archiver.views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import ru.gusar1t0.archiver.models.Data;
 import ru.gusar1t0.archiver.utilities.Utils;
 
 /**
  * @author Roman Mashenkin
  * @since 16.03.2017
  */
-public final class InfoTable extends TableView<Data> {
+public final class DataTable extends TableView<Data> {
     private ObservableList<Data> list = FXCollections.observableArrayList();
 
     @SuppressWarnings("unchecked")
-    public InfoTable() {
+    public DataTable() {
         TableColumn<Data, String> values = new TableColumn<>("Xᵢ");
-        values.setCellValueFactory(new PropertyValueFactory<>("value"));
+        values.setCellValueFactory(new PropertyValueFactory<>("symbol"));
 
         TableColumn<Data, Integer> counts = new TableColumn<>("Nᵢ");
         counts.setCellValueFactory(new PropertyValueFactory<>("count"));
